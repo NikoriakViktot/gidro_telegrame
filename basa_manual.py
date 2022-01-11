@@ -73,7 +73,7 @@ driver.quit()
 
 #
 # def open_html():
-ccc = str(html)
+
 soup = BeautifulSoup(html, "lxml")
 d = soup.find_all('pre')
 s = ['='.join(i) for i in d]
