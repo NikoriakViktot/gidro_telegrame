@@ -1,0 +1,9 @@
+requests
+beautifulsoup4
+
+selenium
+virtualenv
+python-dotenv
+Celery
+lxml
+aiohttp
