@@ -11,7 +11,7 @@ def index_gagues():
 
 
 def create_db():
-    with sq.connect('gauges_telegrame.db') as con:
+    with sq.connect('../gauges_telegrame.db') as con:
         cur = con.cursor()
         cur.execute('''CREATE TABLE  index_gauges
                         (index_gauges TEXT NOT NULL)
@@ -28,7 +28,7 @@ def create_db():
 
 
 def save_db():
-    with sq.connect('gauges_telegrame.db') as con:
+    with sq.connect('../gauges_telegrame.db') as con:
         cur = con.cursor()
         for i in index_gagues():
             data = i
