@@ -10,32 +10,45 @@ def open_html(index):
             d = soup.find_all('pre')
             s = ['='.join(i) for i in d]
             telegram = [re.sub(("\s+"), " ", i) for i in s]
-            print(telegram)
-            return telegram
+            for x in telegram:
+                try:
+                    yield x[0:19], x[20:]
 
-
-def pars_telegram():
-    telegram_html = open_html()
-    date_telegram = [i[26:32] for i in telegram_html]
-    print(date_telegram)
-
+                except TypeError:
+                    yield None
 
 
 
+# def pars_telegram():
+#     for x in open_html():
+#         telegram_html = x
+#         try:
+#             date_telegram = [i[26:32] for i in telegram_html]
+#         except TypeError:
+#             date_telegram = None
+#         print(date_telegram)
 
-def request_index():
+
+
+
+
+def save_db():
     with sq.connect('../gauges_telegrame.db') as con:
         cur = con.cursor()
-        cur.execute("SELECT * FROM index_gauges")
-        index = [x[0] for x in cur.fetchall()]
-        for value in index:
-            INDEX = []
-            INDEX.append(value)
-            yield INDEX
+        for i in request_index():
+            index = i[0]
+            for s in open_html(index):
+                date = s[0]
+                telegram = s[1]
+                cur.execute(f'''insert INTO '{index}'
+                            (date, gauges_telegrame)
+                            VALUES(?,?) ''', (date, telegram))
+                con.commit()
+
+save_db()
 
 
 
-for i in request_index():
-    open_html(i[0])
 
-pars_telegram()
+
+
