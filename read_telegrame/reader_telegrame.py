@@ -11,17 +11,15 @@ from collections import ChainMap
 def select_telegrame():
     for i in request_index():
         index_i = int(i[0])
-        # print(index_i)
         with sq.connect('../gauges_telegrame.db') as con:
             cur = con.cursor()
             cur.execute(f"SELECT date, gauges_telegrame FROM '{index_i}'" )
-            # data = cur.fetchall()
+
             body_telegram = (x for x in cur.fetchall())
-            # print(data[0][1])
-            # print( body_telegram)
+
             for x in  body_telegram:
-                print(str(x[0]).split(' '))
-                # print(x[1])
+                print(index_i ,str(x[0][8:10]).split(' '))
+
                 print(str(x[1]).split(' '))
                 # if x == None:
                     # print(x)
