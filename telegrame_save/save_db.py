@@ -19,15 +19,6 @@ def open_html(index):
 
 
 
-# def pars_telegram():
-#     for x in open_html():
-#         telegram_html = x
-#         try:
-#             date_telegram = [i[26:32] for i in telegram_html]
-#         except TypeError:
-#             date_telegram = None
-#         print(date_telegram)
-
 
 
 
