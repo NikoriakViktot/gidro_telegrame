@@ -19,10 +19,6 @@ def open_html(index):
 
 
 
-
-
-
-
 def save_db():
     with sq.connect('../gauges_telegrame.db') as con:
         cur = con.cursor()
