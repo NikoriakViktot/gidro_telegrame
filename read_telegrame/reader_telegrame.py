@@ -63,7 +63,7 @@ def telegram_report():
 
 
 for x in telegram_report():
-    print(x[1][2])
+    print(x[1][1][4])
 
 
 
