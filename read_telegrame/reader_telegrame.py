@@ -18,9 +18,9 @@ def select_telegrame():
             body_telegram = (x for x in cur.fetchall())
 
             for x in  body_telegram:
-                print(index_i ,str(x[0][8:10]).split(' '))
+                # print(index_i ,str(x[0][8:10]).split(' '))
 
-                print(str(x[1]).split(' '))
+                print([y.split() for y  in [y for y in  str(x[1]).split(' ')]])
                 # if x == None:
                     # print(x)
 
