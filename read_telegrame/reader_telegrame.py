@@ -8,32 +8,6 @@ import itertools
 
 from collections import ChainMap
 
-class Report(object):
-    def __init__(self,index):
-        # self.date = date
-        self.index = index
-
-
-    def __get__(self, instance, owner):
-        if self.index not in instance.__dict__:
-            raise AttributeError(self)
-        print('get')
-        return instance.__dict__[self.index]
-
-
-
-    def __set__(self, instance, value):
-        print('set')
-        print(value)
-        data = value
-        patern_1grup = re.compile('(1\d{4})')
-        I_grup = [re.findall('(1\d{4})', str(i)) for i in data]
-
-        instance.__dict__[self.index] = I_grup
-
-
-
-
 
 def select_telegrame():
     for i in request_index():
@@ -45,11 +19,15 @@ def select_telegrame():
             body_telegram = [x for x in cur.fetchall()]
             yield body_telegram
 
-def generator_ob():
-    for i in request_index():
-        index_i_r = Report(str(i[0]))
-        yield index_i_r
-    # print(index_i_r.__dict__)
+
+
+# def generator_ob():
+#     for i in request_index():
+#         index_i_r = Report(str(i[0]))
+#         yield index_i_r
+#     # print(index_i_r.__dict__)
+
+
 
 def telegram_report():
     for x in  select_telegrame():
@@ -63,48 +41,13 @@ def telegram_report():
 
 
 for x in telegram_report():
-    print(x[1][1][4])
+    print(x[1])
 
 
 
 
 
 
-                # print(value)
-                # ind.__set__(instance = ind,value=value)
-                # print(ind.__set__(instance = ind,value=value))
-                # print(ind.__dict__)
-                # print(ind.__get__(instance=ind, owner=Report))
-
-
-
-                        # ([y.split() for y  in [y for y in  str(x[1]).split(' ')]])
-
-
-
-
-
-
-
-# for x in select_telegrame():
-#     print(x.__dict__)
-
-
-# print(report.__get__(instance=report, owner=Report))
-# print(report.__dict__)
-
-
-
-    # def open_html(self):
-    #     with open(f'E:\ВІТЯ\gidro_bot\data_html\{datetime.date.today().strftime("%Y-%m-%d")}.html', 'r', encoding='koi8-u') as file:
-    #         r = file.read()
-    #         soup = BeautifulSoup(r, "lxml")
-    #         d = soup.find_all('pre')
-    #         s = ['='.join(i) for i in d]
-    #         telegrams = [re.sub(("\s+"), " ", i) for i in s]
-    #         return telegrams
-    #
-    #
     #
     # def pars_telegram(self):
     #     self.list_telegrams =  self.open_html()

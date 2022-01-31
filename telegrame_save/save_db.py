@@ -1,5 +1,6 @@
 import re
 from bs4 import BeautifulSoup
+import os
 import sqlite3 as sq
 from telegrame_save.request_index import request_index
 
@@ -10,6 +11,7 @@ def open_html(index):
             d = soup.find_all('pre')
             s = ['='.join(i) for i in d]
             telegram = [re.sub(("\s+"), " ", i) for i in s]
+
             for x in telegram:
                 try:
                     yield x[0:19], x[20:]
@@ -31,6 +33,7 @@ def save_db():
                             (date, gauges_telegrame)
                             VALUES(?,?) ''', (date, telegram))
                 con.commit()
+            os.remove(f'../telegrame_save/data_html/{index}.html')
 
 save_db()
 
