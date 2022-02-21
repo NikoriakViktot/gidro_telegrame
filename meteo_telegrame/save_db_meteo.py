@@ -22,7 +22,7 @@ def open_html(index):
 
 
 def save_db():
-    with sq.connect('../gauges_telegrame.db') as con:
+    with sq.connect('../meteo_telegrame.db') as con:
         cur = con.cursor()
         for i in request_index():
             index = i[0]
@@ -30,7 +30,7 @@ def save_db():
                 date = s[0]
                 telegram = s[1]
                 cur.execute(f'''insert INTO '{index}'
-                            (date, gauges_telegrame)
+                            (date, meteo_telegrame)
                             VALUES(?,?) ''', (date, telegram))
                 con.commit()
             os.remove(f'../telegrame_save/data_html/{index}.html')
