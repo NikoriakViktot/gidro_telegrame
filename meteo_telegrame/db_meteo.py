@@ -14,7 +14,7 @@ def create_db_meteo():
     with sq.connect('../meteo_telegrame.db') as con:
         cur = con.cursor()
         cur.execute('''CREATE TABLE  index_meteo
-                        (index_meteo TEXT NOT NULL)
+                        (index_meteo TEXT )
                          ''')
         con.commit()
         for i in index_meteo():
@@ -22,7 +22,7 @@ def create_db_meteo():
             print(index_i)
             cur.execute(f'''CREATE TABLE  '{index_i}'
                    (date DATA,
-                   meteo_telegrame TEXT NOT NULL)''')
+                   meteo_telegrame TEXT)''')
             con.commit()
 
 
