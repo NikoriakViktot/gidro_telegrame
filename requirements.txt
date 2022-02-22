@@ -7,3 +7,4 @@ python-dotenv
 Celery
 lxml
 aiohttp
+openpyxl

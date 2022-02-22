@@ -38,3 +38,5 @@ def save_db():
                         VALUES(?)''', (data,))
             con.commit()
 
+# create_db_meteo()
+# save_db()
