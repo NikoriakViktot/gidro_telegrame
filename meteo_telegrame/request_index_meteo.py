@@ -16,7 +16,6 @@ def request_index_meteo():
 
 
 
-# print(open_html())
-# #
-for x in request_index_meteo():
-    print(x)
+
+# for x in request_index_meteo():
+#     print(x)
