@@ -94,14 +94,14 @@ def post_meteo_telegrame():
     time.sleep(0.3)
     for value in request_index_meteo():
         index = value[0]
-        time.sleep(0.2)
+        time.sleep(0.1)
         driver.implicitly_wait(time_to_wait=0.5)
-        time.sleep(0.3)
+        time.sleep(0.2)
 
         driver.find_element(by=By.CLASS_NAME, value='submenu'). \
                 find_element(by=By.XPATH,
                              value='/html/body/table/tbody/tr/td[1]/a[7]').click()
-        time.sleep(0.5)
+        time.sleep(0.3)
 
         try:
             WebDriverWait(driver, 0.5).until(EC.presence_of_element_located((By.CLASS_NAME, "t1")))
@@ -113,7 +113,7 @@ def post_meteo_telegrame():
             driver.find_element(by=By.XPATH,
                                 value='/html/body/table/tbody/tr/td[2]/'
                                       'form/table/tbody/tr[1]/td/input[2]').click()
-            time.sleep(0.3)
+            time.sleep(0.2)
             file_object = open(f'../meteo_telegrame/data_html/{index}.html', "w", encoding=('koi8-u'))
             html = driver.page_source
             time.sleep(0.2)
@@ -123,7 +123,7 @@ def post_meteo_telegrame():
             print(f'save _____{index}____.html')
             driver.refresh()
             print("__new index__")
-            time.sleep(0.5)
+            time.sleep(0.2)
         except:
             driver.refresh()
             time.sleep(0.2)

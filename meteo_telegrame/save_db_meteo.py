@@ -35,6 +35,7 @@ def save_db_meteo():
                     for x in s:
                         date = x[0]
                         telegram = x[1]
+                        print(telegram)
                         cur.execute(f'''insert INTO '{index}'
                                     (date, meteo_telegrame)
                                     VALUES(?,?) ''', (date, telegram))
@@ -43,7 +44,7 @@ def save_db_meteo():
                                  (date, meteo_telegrame)
                                  VALUES(?,?) ''', (None, None))
                     print("No telegrame")
-            con.commit()
+                con.commit()
             # os.remove(f'../telegrame_save/data_html/{index}.html')
 
 save_db_meteo()
