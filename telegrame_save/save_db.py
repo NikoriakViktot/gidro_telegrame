@@ -20,7 +20,6 @@ def open_html(index):
                     yield None
 
 
-
 async def save_db():
     with sq.connect('../gauges_telegrame.db') as con:
         cur = con.cursor()
@@ -33,9 +32,9 @@ async def save_db():
                             (date, gauges_telegrame)
                             VALUES(?,?) ''', (date, telegram))
                 con.commit()
-            os.remove(f'../telegrame_save/data_html/{index}.html')
+            # os.remove(f'../telegrame_save/data_html/{index}.html')
 
-save_db()
+# save_db()
 
 
 
