@@ -210,3 +210,4 @@ def index_gidropost()->str:
     return index
 
 print(index_gidropost())
+post_gidro_telegrame_all(index_gidropost())
