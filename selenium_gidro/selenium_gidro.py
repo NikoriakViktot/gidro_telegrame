@@ -80,10 +80,10 @@ load_dotenv()
 # d.CdpSession.execute("Network.setExtraHTTPHeaders",
 #                        {"headers": get_auth_header(os.getenv('user'), os.getenv("password"))})
 # driver.get('http://gcst.meteo.gov.ua/armua/sino/index.phtml')
-g = f.network.Headers.to_json(aut)
-print(g)
-kk = f.network.set_extra_http_headers(f.network.Headers.to_json(aut))
-driver.execute('get', )
+# g = f.network.Headers.to_json(aut)
+# print(g)
+# kk = f.network.set_extra_http_headers(f.network.Headers.to_json(aut))
+# driver.execute('get', )
 # c = f.network.set_extra_http_headers(g)
 # print(c)
 # driver.execute('get', c.send(None))
@@ -107,8 +107,8 @@ driver.execute('get', )
 # driver.execute_cdp_cmd("Network.setExtraHTTPHeaders",
 #                        {"headers": get_auth_header(os.getenv('user'), os.getenv("password"))})
 # driver.execute('get', params='/session/$sessionId/title')
-# driver.get('http://gcst.meteo.gov.ua/armua/sino/index.phtml')
-
+driver.get('http://gcst.meteo.gov.ua/armua/sino/index.phtml')
+print(driver.get('http://gcst.meteo.gov.ua/armua/sino/index.phtml'))
 # for key in cookies:
 #     driver.add_cookie({'name': key, 'value': cookies[key]})
 # browser_ip = '212.26.138.5'

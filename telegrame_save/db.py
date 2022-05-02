@@ -21,7 +21,7 @@ def create_db():
             index_i = int(i)
             # print(index_i)
             cur.execute(f'''CREATE TABLE  '{index_i}'
-                   (date DATA,
+                   (date TEXT,
                    gauges_telegrame TEXT NOT NULL)''')
             con.commit()
 
@@ -38,5 +38,5 @@ def save_db():
             con.commit()
 
 
-
-
+# create_db()
+# save_db()
