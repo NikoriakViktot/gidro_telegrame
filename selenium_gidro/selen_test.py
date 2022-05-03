@@ -163,16 +163,27 @@ def post_gidro_telegrame_all(index):
         'tbody/tr[2]/td[1]/table/tbody/tr[3]/td/font/input[1]').clear()
         driver.find_element(by=By.XPATH,value='/html/body/table/tbody/tr/td[2]/form/table/' \
         'tbody/tr[2]/td[1]/table/tbody/tr[3]/td/font/input[1]') \
-            .send_keys('10')
+            .send_keys('2')
+        driver.find_element(by=By.XPATH, value='/html/body/table/tbody/tr/td[2]/'
+                                               'form/table/tbody/tr[2]/td[1]/table'
+                                               '/tbody/tr[3]/td/font/input[2]').clear()
+        time.sleep(0.1)
+        driver.find_element(by=By.XPATH,
+                            value='/html/body/table/tbody/tr/td[2]/'
+                                  'form/table/tbody/tr[2]/td[1]/'
+                                  'table/tbody/tr[3]/td/font/input[2]') \
+            .send_keys(datetime.date.today().strftime("%Y-%m-%d") + ' ' + '10:00:36')
+
         driver.find_element(by=By.XPATH, value='/html/body/table/tbody/tr/td[2]/'
                                 'form/table/tbody/tr[2]/td[1]/table'
-                                '/tbody/tr[3]/td/font/input[2]').clear()
+                                '/tbody/tr[3]/td/font/input[3]').clear()
         time.sleep(0.1)
         driver.find_element(by=By.XPATH,
                                 value='/html/body/table/tbody/tr/td[2]/'
                                    'form/table/tbody/tr[2]/td[1]/'
-                                   'table/tbody/tr[3]/td/font/input[2]')\
-                                .send_keys(datetime.date.today().strftime("%Y-%m-%d")+ ' ' + '10:00:36')
+                                   'table/tbody/tr[3]/td/font/input[3]')\
+                                .send_keys((datetime.datetime.today() + datetime.timedelta(days=-1)).strftime
+                           ("%Y-%m-%d")+ ' ' + '05:00:36')
         time.sleep(0.1)
         driver.find_element(by=By.XPATH,
                                 value='/html/body/table/tbody/tr/td[2]/'

@@ -1,83 +1,121 @@
+import time
+import os
+from dotenv import load_dotenv
 import json
 import base64
-from selenium.webdriver.remote.remote_connection import RemoteConnection
-import selenium.webdriver.common.devtools.v96 as devtools
-import asyncio
-from selenium.webdriver.remote.webdriver import RemoteConnection
-# import selenium.webdriver.common.devtools.v96 as devtools
-from selenium.webdriver.common.bidi import cdp
+import datetime
+from selenium.webdriver.common.by import By
 from selenium import webdriver
-import parser
-from urllib import parse
-from urllib.parse import urlparse
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from telegrame_save.request_index import request_index
 
-# browser_ip = '212.26.138.5'
-# browser_ip ='127.0.0.1'
-#
-# capabilities = {
-#         "browserName": "chrome",
-#         "version": "99.0",
-#         "enableVNC": True,
-#         "enableVideo": False,
-#         "platform": "LINUX"
-#            }
+# username = 'chernovcgm'
+# password = '(zBLFX$#)'
+
+
 def get_auth_header(user, password):
     b64 = "Basic " + base64.b64encode('{}:{}'.format(user, password).encode('utf-8')).decode('utf-8')
-    headers = {'headers':{"Authorization":b64}}
-    return json.dumps(headers)
-
-# driver = webdriver.Remote(command_executor = f'http://{browser_ip}:4444/wd/hub', desired_capabilities=capabilities)
+    return {"Authorization": b64}
 
 
-# {"headers": get_auth_header(os.getenv('user'), os.getenv("password"))})
-url = 'http://gcst.meteo.gov.ua/armua/sino/index.phtml'
-
-
-# load_dotenv()
-aut = get_auth_header('chernovcgm', "(zBLFX$#)b")
-print(aut)
-# dev = devtools.network.enable()
-# dev.send()
-# r = RemoteConnection
-# username='chernovcgm'
-# password= "(zBLFX$#)b"
-# f'http://{username}:{password}gcst.meteo.gov.ua/armua/sino/index.phtml'
-# # r.get_remote_connection_headers()
-#
-# print(r)
-# driver.get('https://www.google.com')
-
-
-
-# def test_get_remote_connection_headers_adds_auth_header_if_pass():
-#     username = 'chernovcgm'
-#     password = '(zBLFX$#)'
-#     url = f'htpp://{username}@{password}gcst.meteo.gov.ua/armua/sino/index.phtml'
-#     print(parse.urlparse(url, allow_fragments=False))
-#     headers = RemoteConnection.get_remote_connection_headers(parse.urlparse(url))
-#     # print(headers.items())
-#     headers.get('Authorization')
-
-import json
-from selenium import webdriver
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-
-driver = webdriver.Remote(
-   command_executor='http://127.0.0.1:4444/wd/hub',
-   desired_capabilities=DesiredCapabilities.CHROME)
-
-
-def send(driver, cmd, params={}):
-    resource = "/session/%s/chromium/send_command_and_get_result" % driver.session_id
+def execute_cmd(driver, cmd, params):
+    resource = f"/session/{driver.session_id}/chromium/send_command_and_get_result"
     url = driver.command_executor._url + resource
-    print(url)
     body = json.dumps({'cmd': cmd, 'params': params})
-    print(body)
     response = driver.command_executor._request('POST', url, body)
-    print(response)
     return response.get('value')
-cmd = "Network.setExtraHTTPHeaders"
-params = get_auth_header('chernovcgm', "(zBLFX$#)b")
-# send(driver=driver, cmd=cmd, params=params)
-print(send(driver=driver, cmd=cmd, params=params))
-driver.get('https://www.google.com')
+
+
+def get_driver():
+    print('Connecting to Selenoid Chrome')
+    browser_ip = '212.26.138.5'
+    options = webdriver.ChromeOptions()
+    options.set_capability('selenoid:options', {"enableVNC": True})
+    return webdriver.Remote(command_executor=f'http://{browser_ip}:4444/wd/hub', options=options)
+
+
+driver = get_driver()
+
+
+def post_gidro_telegrame_all(index):
+    try:
+        time.sleep(2)
+        driver.maximize_window()
+        time.sleep(5)
+        execute_cmd(driver, "Network.enable", {})
+        load_dotenv()
+        execute_cmd(driver, "Network.setExtraHTTPHeaders",
+                    {"headers": get_auth_header(os.getenv('user'), os.getenv('password'))})
+        time.sleep(2)
+        driver.get(f'http://gcst.meteo.gov.ua/armua/sino/index.phtml')
+        time.sleep(0.3)
+        time.sleep(0.1)
+        driver.implicitly_wait(time_to_wait=0.2)
+        time.sleep(0.1)
+        driver.find_element(by=By.CLASS_NAME, value='submenu'). \
+            find_element(by=By.XPATH,
+                         value='/html/body/table/tbody/tr/td[1]/a[10]').click()
+        time.sleep(0.3)
+        WebDriverWait(driver, 0.3).until(EC.presence_of_element_located((By.CLASS_NAME, "t1")))
+        time.sleep(0.3)
+        driver.find_element(by=By.CLASS_NAME, value='t1').send_keys(index)
+        time.sleep(0.1)
+        driver.implicitly_wait(time_to_wait=0.3)
+        # print(f' write {index}')
+        time.sleep(0.1)
+        driver.find_element(by=By.XPATH, value='/html/body/table/tbody/tr/td[2]/form/table/' \
+                                               'tbody/tr[2]/td[1]/table/tbody/tr[3]/td/font/input[1]').clear()
+        driver.find_element(by=By.XPATH, value='/html/body/table/tbody/tr/td[2]/form/table/' \
+                                               'tbody/tr[2]/td[1]/table/tbody/tr[3]/td/font/input[1]') \
+            .send_keys('2')
+        driver.find_element(by=By.XPATH, value='/html/body/table/tbody/tr/td[2]/'
+                                               'form/table/tbody/tr[2]/td[1]/table'
+                                               '/tbody/tr[3]/td/font/input[2]').clear()
+        time.sleep(0.1)
+        driver.find_element(by=By.XPATH,
+                            value='/html/body/table/tbody/tr/td[2]/'
+                                  'form/table/tbody/tr[2]/td[1]/'
+                                  'table/tbody/tr[3]/td/font/input[2]') \
+            .send_keys(datetime.date.today().strftime("%Y-%m-%d") + ' ' + '10:00:36')
+
+        driver.find_element(by=By.XPATH, value='/html/body/table/tbody/tr/td[2]/'
+                                               'form/table/tbody/tr[2]/td[1]/table'
+                                               '/tbody/tr[3]/td/font/input[3]').clear()
+        time.sleep(0.1)
+        driver.find_element(by=By.XPATH,
+                            value='/html/body/table/tbody/tr/td[2]/'
+                                  'form/table/tbody/tr[2]/td[1]/'
+                                  'table/tbody/tr[3]/td/font/input[3]') \
+            .send_keys((datetime.datetime.today() + datetime.timedelta(days=-1)).strftime
+                       ("%Y-%m-%d") + ' ' + '05:00:36')
+        time.sleep(0.1)
+        driver.find_element(by=By.XPATH,
+                            value='/html/body/table/tbody/tr/td[2]/'
+                                  'form/table/tbody/tr[1]/td/input[2]').click()
+        time.sleep(0.1)
+        file_object = open(f'../telegrame_save/data_html/{datetime.date.today().strftime("%Y-%m-%d")}.html', "w",
+                           encoding=('koi8-u'))
+        html = driver.page_source
+        time.sleep(0.1)
+        file_object.write(html)
+        time.sleep(0.1)
+        file_object.close()
+        # print(f'save _____{index}____.html')
+        driver.close()
+        print(f'save telegrame {datetime.date.today().strftime("%Y-%m-%d")}')
+        time.sleep(10)
+        driver.quit()
+    except Exception as ex:
+        print(ex)
+        driver.quit()
+
+def index_gidropost()->str:
+    i = []
+    for value in request_index():
+        i.append(value[0])
+    index = ' '.join(i)
+    return index
+
+
+post_gidro_telegrame_all(index_gidropost())
