@@ -118,6 +118,12 @@ def index_gidropost()->str:
     index = ' '.join(i)
     return index
 
-if name == 'main':
 
+def main():
     post_gidro_telegrame_all(index_gidropost())
+
+
+
+if __name__ == '__main__':
+    main()
+
