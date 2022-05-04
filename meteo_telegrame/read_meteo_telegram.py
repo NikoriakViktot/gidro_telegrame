@@ -1,7 +1,5 @@
 import sqlite3 as sq
 from meteo_telegrame.request_index_meteo import request_index_meteo
-import re
-from openpyxl import load_workbook
 from openpyxl import Workbook
 
 
@@ -28,8 +26,7 @@ def telegram_report_meteo():
     return report_telegrame_meteo
 
 
-#
-#
+
 def report_station_xls():
     wb = Workbook()
     ws = wb.active
@@ -45,6 +42,6 @@ def report_station_xls():
 
 
 
-
-print(telegram_report_meteo())
-report_station_xls()
+if __name__ == '__main__':
+    print(telegram_report_meteo())
+    report_station_xls()
