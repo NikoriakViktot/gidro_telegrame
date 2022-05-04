@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from telegrame_save.request_index import request_index
+from telegrame_save.db import request_index
 
 # username = 'chernovcgm'
 # password = '(zBLFX$#)'
@@ -110,6 +110,7 @@ def post_gidro_telegrame_all(index):
         print(ex)
         driver.quit()
 
+
 def index_gidropost()->str:
     i = []
     for value in request_index():
@@ -117,5 +118,6 @@ def index_gidropost()->str:
     index = ' '.join(i)
     return index
 
+if name == 'main':
 
-post_gidro_telegrame_all(index_gidropost())
+    post_gidro_telegrame_all(index_gidropost())

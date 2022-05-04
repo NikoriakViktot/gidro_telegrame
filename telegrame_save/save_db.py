@@ -4,7 +4,7 @@ from collections import namedtuple
 from bs4 import BeautifulSoup
 import os
 import sqlite3 as sq
-from telegrame_save.request_index import request_index
+from telegrame_save.db import request_index
 
 def open_html():
         with open(f'../telegrame_save/data_html/{datetime.date.today().strftime("%Y-%m-%d")}.html', 'r', encoding='koi8-u') as file:
@@ -22,11 +22,7 @@ def open_html():
 def save_db():
     with sq.connect('../gauges_telegrame.db') as con:
         cur = con.cursor()
-        cur.execute(f'''SELECT gauges_telegrame FROM '{index}' 
-                                  WHERE date in (date('{(datetime.datetime.today() + datetime.timedelta(days=-1)).strftime
-        ("%Y-%m-%d")}'))  ''')
-        telegram_yesterday = cur.fetchone()
-        print(telegram_yesterday[0])
+
 
 
         for s in open_html():
@@ -47,7 +43,6 @@ def save_db():
             # os.remove(f'../telegrame_save/data_html/{index}.html')
 
 save_db()
-
 
 # for x in open_html():
 #     print(x)
