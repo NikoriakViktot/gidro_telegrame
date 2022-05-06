@@ -1,5 +1,6 @@
-
 import sqlite3 as sq
+
+
 
 def index_gagues():
     with open('index.txt', 'r')as f:
@@ -8,6 +9,7 @@ def index_gagues():
         for x in file.split():
             index_gagues.append(x)
         return index_gagues
+
 
 
 def create_db():
@@ -37,6 +39,8 @@ def save_db():
                         VALUES(?)''', (data,))
             con.commit()
 
+
+
 def request_index():
     with sq.connect('../gauges_telegrame.db') as con:
         cur = con.cursor()
@@ -46,6 +50,11 @@ def request_index():
             INDEX = []
             INDEX.append(value)
             yield INDEX
+
+
+
+if __name__ == '__main__':
+    request_index()
 
 
 # create_db()

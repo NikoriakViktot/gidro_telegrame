@@ -18,6 +18,10 @@ def open_html():
             telegram_gidro = []
             for i in request_index():
                 index_g = int(i[0])
+                # print(index_g)
+            for x in telegram:
+                index = int(x[20:26])
+                # print(index)
                 for x in telegram:
                     index = int(x[20:26])
                     if index_g - index == 0:
@@ -28,7 +32,7 @@ def open_html():
             # print(telegram_gidro)
             # if not telegram:
             #     telegram_gidro.append([None])
-            yield telegram_gidro
+            # yield telegram_gidro
             # for x in telegram:
             #      TelegramTuple = namedtuple('TelegramTuple','date_telegrame, telegram', defaults=None)
             #      telegram_gidro = TelegramTuple(x[0:19], x[20:])
@@ -63,9 +67,21 @@ def open_html():
 if __name__ == '__main__':
     open_html()
     # save_db()
-
-for x in open_html():
-    print(x)
+list_index = [int(i[0]) for i in request_index()]
+print(list_index)
+with open(file_html, 'r', encoding='koi8-u') as file:
+    read_file = file.read()
+    soup = BeautifulSoup(read_file, "lxml")
+    body_telegrame = soup.find_all('pre')
+    telegram = [re.sub(("\s+"), " ", i) for i in ['='.join(i) for i in body_telegrame]]
+list_index_teleg =[int(x[20:26]) for x in  telegram]
+# print(list_index_teleg)
+print([x for x in telegram])
+# h = zip(list_index, list_index_teleg)
+# for x in h:
+#     print(x)
+# for x in open_html():
+#     print(x)
 
 
 # print({(datetime.datetime.today() + datetime.timedelta(days=-1).strftime("%Y-%m-%d %hh:%h:%ss"))})

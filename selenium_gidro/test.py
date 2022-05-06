@@ -36,21 +36,20 @@ def get_driver():
 
 
 driver = get_driver()
-
+url = 'http://gcst.meteo.gov.ua/armua/sino/index.phtml'
+data_html = f'../telegrame_save/data_html/{datetime.date.today().strftime("%Y-%m-%d")}.html'
 
 def post_gidro_telegrame_all(index):
+    "Відправка post запиту телеграм по гідропостам  на сайт УкрГМЦ "
     try:
-        time.sleep(2)
         driver.maximize_window()
-        time.sleep(5)
         execute_cmd(driver, "Network.enable", {})
         load_dotenv()
         execute_cmd(driver, "Network.setExtraHTTPHeaders",
                     {"headers": get_auth_header(os.getenv('user'), os.getenv('password'))})
-        time.sleep(2)
-        driver.get(f'http://gcst.meteo.gov.ua/armua/sino/index.phtml')
+        time.sleep(0.2)
+        driver.get(url)
         time.sleep(0.3)
-        time.sleep(0.1)
         driver.implicitly_wait(time_to_wait=0.2)
         time.sleep(0.1)
         driver.find_element(by=By.CLASS_NAME, value='submenu'). \
@@ -62,7 +61,6 @@ def post_gidro_telegrame_all(index):
         driver.find_element(by=By.CLASS_NAME, value='t1').send_keys(index)
         time.sleep(0.1)
         driver.implicitly_wait(time_to_wait=0.3)
-        # print(f' write {index}')
         time.sleep(0.1)
         driver.find_element(by=By.XPATH, value='/html/body/table/tbody/tr/td[2]/form/table/' \
                                                'tbody/tr[2]/td[1]/table/tbody/tr[3]/td/font/input[1]').clear()
@@ -94,14 +92,12 @@ def post_gidro_telegrame_all(index):
                             value='/html/body/table/tbody/tr/td[2]/'
                                   'form/table/tbody/tr[1]/td/input[2]').click()
         time.sleep(0.1)
-        file_object = open(f'../telegrame_save/data_html/{datetime.date.today().strftime("%Y-%m-%d")}.html', "w",
-                           encoding=('koi8-u'))
+        file_object = open(data_html, "w", encoding=('koi8-u'))
         html = driver.page_source
         time.sleep(0.1)
         file_object.write(html)
         time.sleep(0.1)
         file_object.close()
-        # print(f'save _____{index}____.html')
         driver.close()
         print(f'save telegrame {datetime.date.today().strftime("%Y-%m-%d")}')
         time.sleep(10)

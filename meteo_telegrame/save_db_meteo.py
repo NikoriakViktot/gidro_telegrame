@@ -1,11 +1,13 @@
 import re
 from bs4 import BeautifulSoup
-import os
+
 import sqlite3 as sq
 from meteo_telegrame.request_index_meteo import request_index_meteo
 
+data_html = f'../meteo_telegrame/data_html/{index}.html
+
 def open_html_meteo(index):
-        with open(f'../meteo_telegrame/data_html/{index}.html', 'r', encoding='koi8-u') as file:
+        with open(data_html, 'r', encoding='koi8-u') as file:
             r = file.read()
             soup = BeautifulSoup(r, "lxml")
             d = soup.find_all('pre')
@@ -15,11 +17,8 @@ def open_html_meteo(index):
             if telegram:
                 for x in telegram:
                     telegram_meteo.append([x[0:19], x[20:]])
-
             if not telegram:
                 telegram_meteo.append([None])
-                # print(index,None)
-            # print(telegram_meteo)
             yield telegram_meteo
 
 
@@ -47,7 +46,9 @@ def save_db_meteo():
                 con.commit()
             # os.remove(f'../telegrame_save/data_html/{index}.html')
 
-save_db_meteo()
+
+if __name__ == '__main__':
+    save_db_meteo()
 
 
 
