@@ -100,7 +100,7 @@ def post_gidro_telegrame_all(index):
         file_object.close()
         driver.close()
         print(f'save telegrame {datetime.date.today().strftime("%Y-%m-%d")}')
-        time.sleep(10)
+        time.sleep(1)
         driver.quit()
     except Exception as ex:
         print(ex)
