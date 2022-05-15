@@ -45,27 +45,26 @@ class Telegram_html():
             #     yield self.telegrame_last
                 # return self.telegrame_now, self.telegrame_last
 
-    def verification_telegram_index(self):
-        for value in request_index():
-            TelegramNowIndex = namedtuple('TelegramNowIndex', 'index, date_telegrame, telegram', defaults=None)
-            TelegramLastIndex = namedtuple('TelegramLastIndex', 'index, date_telegrame, telegram', defaults=None)
-            # print(value[0])
-            self.telegrame_now_ind = []
+    def verification_telegram_index(self, index):
+        self.telegrame_now_ind = []
 
-            if self.verification_telegram_date_now():
-                for x in self.verification_telegram_date_now():
-                    self.telegrame_now_ind.append(TelegramNowIndex(x.index, x.date_telegrame, x.telegram))
+        for x in self.verification_telegram_date_now():
+             TelegramNowIndex = namedtuple('TelegramNowIndex', 'index, date_telegrame, telegram', defaults=None)
+             print(x)
 
-                # print(x.index)
 
-                    # if int(x.index) - int(value[0]) == 0:
 
-                #
-                if not self.verification_telegram_date_now():
-                   self.telegrame_now_ind.append(TelegramNowIndex(value[0],x.date_telegrame, None))
-                    # print(self.telegrame_now_ind)
-                yield self.telegrame_now_ind
+             if x.index == index:
+                 self.telegrame_now_ind.append(TelegramNowIndex(x.index, x.date_telegrame, x.telegram))
 
+             if index !=  x.index:
+                        # print(value)
+                # if value[0] is not x.index:
+                 self.telegrame_now_ind.append(TelegramNowIndex(index,x.date_telegrame, None))
+                 # yield self.telegrame_now_ind
+
+            # TelegramLastIndex = namedtuple('TelegramLastIndex', 'index, date_telegrame, telegram', defaults=None)
+            # # print(value[0])
 
 
 
@@ -110,11 +109,15 @@ if __name__ == '__main__':
     s.open_file()
 
     # v = s.verification_telegram_date()
-    v = s.verification_telegram_index()
+    # v = s.verification_telegram_index()
     # aa =
-    for x in v:
+    for x in request_index():
         print(x)
-    #
+        s.verification_telegram_index(x[0])
+
+
+
+    # #
     # for x in s.telegrame_last:
     #     print(x)
     # for x in s.soup_file():

@@ -107,6 +107,7 @@ def post_gidro_telegrame_all(index):
         driver.quit()
 
 
+
 def index_gidropost()->str:
     i = []
     for value in request_index():
