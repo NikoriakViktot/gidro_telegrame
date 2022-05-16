@@ -72,8 +72,8 @@ class Telegram_gidro():
                 #     cur.execute(f'''insert INTO '{self.index}'
                 #                       (date, gauges_telegrame)
                 #                     VALUES(?,?) ''', (date, telegram))
-
-                # if index_gaqauses not in self.index:
+                # else:
+                # # if index_gaqauses not in self.index:
                 #     print(index_gaqauses)
                 #     print("No telegrame")
                     # cur.execute(f'''insert INTO '{self.index}'
@@ -122,9 +122,11 @@ if __name__ == '__main__':
     for i in s.soup_file():
         for x in request_index():
             object_t = Telegram_gidro(i.index,i.date_telegrame,i.telegram)
-            object_t.save_db_gidro(x[0])
-
-            # print(x)
+            # object_t.save_db_gidro(x[0])
+            if int(x[0]) -  int(i.index) ==0:
+                object_t.save_db_gidro(x[0])
+            if x[0] is not i.index:
+                print(x[0])
 
 
             # for d in s.verification_telegram_date_now():
