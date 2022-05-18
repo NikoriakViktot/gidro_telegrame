@@ -59,21 +59,18 @@ class Telegram_gidro():
 
         with sq.connect('../gauges_telegrame.db') as con:
             cur = con.cursor()
-            index_gaqauses = index
+
             # print(index_gaqauses)
             date_now = datetime.date.today().strftime("%Y-%m-%d")
-            if int(index_gaqauses) - int(self.index) == 0:
-                if self.date_telegrame[0:10] == date_now:
-                    date = self.date_telegrame
-                    telegram = self.telegram
-                    # print(index_gaqauses)
-                #
-                    print('telegrame ',date,index, telegram)
-                #     cur.execute(f'''insert INTO '{self.index}'
-                #                       (date, gauges_telegrame)
-                #                     VALUES(?,?) ''', (date, telegram))
-                # else:
-                # # if index_gaqauses not in self.index:
+
+            if self.date_telegrame[0:10] == date_now:
+                date = self.date_telegrame
+                telegram = self.telegram
+                print('telegrame ',date,telegram)
+                cur.execute(f'''insert INTO '{index}'
+                                (date, gauges_telegrame)
+                               VALUES(?,?) ''', (date, telegram))
+                con.commit()
                 #     print(index_gaqauses)
                 #     print("No telegrame")
                     # cur.execute(f'''insert INTO '{self.index}'
@@ -121,12 +118,16 @@ if __name__ == '__main__':
     s.open_file()
     for i in s.soup_file():
         for x in request_index():
-            object_t = Telegram_gidro(i.index,i.date_telegrame,i.telegram)
-            # object_t.save_db_gidro(x[0])
-            if int(x[0]) -  int(i.index) ==0:
-                object_t.save_db_gidro(x[0])
-            if x[0] is not i.index:
-                print(x[0])
+
+            if int(x[0]) -  int(i.index) == 0:
+               object_t = Telegram_gidro(i.index, i.date_telegrame, i.telegram)
+               object_t.save_db_gidro(x[0])
+
+    # t = [x[0] for x in request_index()]
+    # v = {x.index for x in s.soup_file()}
+    # ynic = t,v
+    # print(v.remove(t))
+
 
 
             # for d in s.verification_telegram_date_now():
