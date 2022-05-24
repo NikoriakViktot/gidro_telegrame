@@ -5,7 +5,32 @@ from bs4 import BeautifulSoup
 import os
 import sqlite3 as sq
 from telegrame_save.db import request_index
-from telegrame_save.class_html import Telegram_html
+
+
+class Telegram_html():
+
+    def __init__(self,file):
+       self.file = file
+
+
+
+    def open_file(self):
+        with open(self.file, 'r', encoding='koi8-u') as file:
+            self.read_file = file.read()
+            return self.read_file
+
+
+
+    def soup_file(self):
+        soup = BeautifulSoup(self.read_file, "lxml")
+        body_telegrame = soup.find_all('pre')
+        telegram = [re.sub(("\s+"), " ", i) for i in ['='.join(i) for i in body_telegrame]]
+        TelegramTuple = namedtuple('TelegramTuple', 'index, date_telegrame, telegram', defaults=None)
+        for x in telegram:
+            telegram_gidro = TelegramTuple(x[20:26],x[0:19], x[20:])
+            yield telegram_gidro
+
+
 
 class Telegram_gidro():
 
@@ -16,97 +41,40 @@ class Telegram_gidro():
 
 
 
-
-    def verification_telegram_date_now(self):
-
-       date_now = datetime.date.today().strftime("%Y-%m-%d")
-       date_last = (datetime.datetime.today() + datetime.timedelta(days=-1)).strftime("%Y-%m-%d")
-       TelegramNow = namedtuple('TelegramNow', 'index, date_telegrame, telegram', defaults=None)
-       TelegramLast = namedtuple('TelegramLast', 'index, date_telegrame, telegram', defaults=None)
-       if self.date_telegrame[0:10]  == date_now:
-           self.telegrame_now = TelegramNow(self.index,self.date_telegrame,self.telegram)
-           # print(self.telegrame_now)
-           return self.telegrame_now
-            # if x.date_telegrame[0:10]  == date_last:
-            #     self.telegrame_last = TelegramLast(x.index,x.date_telegrame,x.telegram)
-            #     yield self.telegrame_last
-                # return self.telegrame_now, self.telegrame_last
-
-
-
-    # def verification_telegram_index(self):
-    #     self.telegrame_now_ind = []
-    #     for x in self.verification_telegram_date_now():
-    #         TelegramNowIndex = namedtuple('TelegramNowIndex', 'index, date_telegrame, telegram', defaults=None)
-    #
-    #
-    #
-    #
-    #         if x.index == self.index:
-    #              self.telegrame_now_ind.append(TelegramNowIndex(x.index, x.date_telegrame, x.telegram))
-    #
-    #         if self.index !=  x.index:
-    #                     # print(value)
-    #             # if value[0] is not x.index:
-    #              self.telegrame_now_ind.append(TelegramNowIndex(self.index,x.date_telegrame, None))
-    #              # yield self.telegrame_now_ind
-    #
-    #         # TelegramLastIndex = namedtuple('TelegramLastIndex', 'index, date_telegrame, telegram', defaults=None)
-    #         # # print(value[0])
-    #
-
-    def save_db_gidro(self, index):
-
+    def save_db_gidro(self):
         with sq.connect('../gauges_telegrame.db') as con:
             cur = con.cursor()
-
-            # print(index_gaqauses)
+            date_last = (datetime.datetime.today() + datetime.timedelta(days=-1)).strftime("%Y-%m-%d")
             date_now = datetime.date.today().strftime("%Y-%m-%d")
-
             if self.date_telegrame[0:10] == date_now:
-                date = self.date_telegrame
-                telegram = self.telegram
-                print('telegrame ',date,telegram)
-                cur.execute(f'''insert INTO '{index}'
+                date_n = self.date_telegrame
+                telegram_n = self.telegram
+                cur.execute(f'''insert INTO '{int(self.index)}'
                                 (date, gauges_telegrame)
-                               VALUES(?,?) ''', (date, telegram))
-                con.commit()
-                #     print(index_gaqauses)
-                #     print("No telegrame")
-                    # cur.execute(f'''insert INTO '{self.index}'
-                    #                  (date, gauges_telegrame)
-                    #                  VALUES(?,?) ''', (None, None))
+                               VALUES(?,?) ''', (date_n, telegram_n))
+            if self.date_telegrame[0:10] == date_last:
+                date_l = self.date_telegrame
+                telegram_l = self.telegram
+                cur.execute(f'''SELECT gauges_telegrame FROM '{int(self.index)}'
+                          WHERE date = '{(datetime.datetime.today() + datetime.timedelta(days=-1)).strftime
+                           ("%Y-%m-%d")} 08:00:00' ''')
+                telegram_yesterday = cur.fetchone()
+                if telegram_yesterday is None:
+                    cur.execute(f''' insert INTO   '{int(self.index)}'
+                               (date, gauges_telegrame)
+                              VALUES(?,?) ''', (date_l, telegram_l))
+                if telegram_yesterday is not None:
+                    varif = telegram_l == telegram_yesterday[0]
+                    if varif is True:
+                        print(date_l, self.index)
+                    else:
+                        cur.execute(f''' update '{int(self.index)}' SET 
+                                     gauges_telegrame = ?
+                                     WHERE date = '{date_l}' ''', (telegram_l,))
+                        print(date_now, self.index)
+            con.commit()
 
 
-    # def save_db(self):
-    #             with sq.connect('../gauges_telegrame.db') as con:
-    #                 cur = con.cursor()
-    #
-    #                     for s in open_html():
-    #                         # index = int(s[0])
-    #                         # print(index)
-    #                         print(s)
-            # date = s[1].date_telegrame[0:10]
-            # telegram = s[1].telegram
-            # cur.execute(f'''SELECT gauges_telegrame FROM '{index}'
-            #           WHERE date in (date('{(datetime.datetime.today() + datetime.timedelta(days=-1)).strftime
-            #            ("%Y-%m-%d")}'))  ''')
-            # telegram_yesterday = cur.fetchone()
-            # print(telegram_yesterday[0])
-
-            # cur.execute(f'''insert INTO '{index}'
-            #                 (date, gauges_telegrame)
-            #                 VALUES(?,?) ''', (date, telegram))
-            # con.commit()
-            # os.remove(f'../telegrame_save/data_html/{index}.html')
-
-
-
-
-
-
-
-            # print(x.date_telegrame[0:10])
 
 
 
@@ -118,17 +86,7 @@ if __name__ == '__main__':
     s.open_file()
     for i in s.soup_file():
         for x in request_index():
-
-            if int(x[0]) -  int(i.index) == 0:
+            if int(x[0]) -  int(i.index) == False:
                object_t = Telegram_gidro(i.index, i.date_telegrame, i.telegram)
-               object_t.save_db_gidro(x[0])
+               object_t.save_db_gidro()
 
-    # t = [x[0] for x in request_index()]
-    # v = {x.index for x in s.soup_file()}
-    # ynic = t,v
-    # print(v.remove(t))
-
-
-
-            # for d in s.verification_telegram_date_now():
-            # print(d)
