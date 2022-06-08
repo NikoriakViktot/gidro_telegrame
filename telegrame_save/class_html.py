@@ -26,13 +26,29 @@ class Telegram_html():
         body_telegrame = soup.find_all('pre')
         telegram = [re.sub(("\s+"), " ", i) for i in ['='.join(i) for i in body_telegrame]]
         TelegramTuple = namedtuple('TelegramTuple', 'index, date_telegrame, telegram', defaults=None)
-        for x in telegram:
-            telegram_gidro = TelegramTuple(x[20:26],x[0:19], x[20:])
-            yield telegram_gidro
+        for value in request_index():
+            telegram_gidro= []
+            for x in telegram:
+                variable_int = (int(value[0]) - int(x[20:26]))
+                variable_str = (value[0] is not x[20:26])
+                # print(variable_int)
+                # print(variable_str)
+                # if variable_int == False:
+                    # telegram_gidro.append([TelegramTuple(x[20:26],x[0s:19], x[20:])])
+                    # if variable_int == True:
+                    #     continue
+
+            for x in telegram:
+                for value in request_index():
+                    if value[0] is not x[20:26]:
+                        print(value)
+            # telegram_gidro = TelegramTuple(x[20:26],x[0:19], x[20:])
+            # yield telegram_gidro
 
 
-# if __name__ == '__main__':
-#     # file_html = f'../telegrame_save/data_html/{datetime.date.today().strftime("%Y-%m-%d")}.html'
-#     # s = Telegram_html(file_html)
-#     # s.open_file()
-#     # s.soup_file()
+if __name__ == '__main__':
+    file_html = f'../telegrame_save/data_html/{datetime.date.today().strftime("%Y-%m-%d")}.html'
+    f= '../telegrame_save/data_html/2022-05-24.html'
+    s = Telegram_html(f)
+    s.open_file()
+    print(s.soup_file())
