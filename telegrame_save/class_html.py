@@ -67,6 +67,7 @@ class Telegram_html():
         # for x in self.variable_telegrame_gidro():
         #     tt = []
         #     if len(x):
+
         #         pass
         #     else:
         #         for z in not_telegram:
