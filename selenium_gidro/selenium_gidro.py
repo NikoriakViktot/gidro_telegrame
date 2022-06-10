@@ -113,6 +113,7 @@ def index_gidropost()->str:
     for value in request_index():
         i.append(value[0])
     index = ' '.join(i)
+    print(len(index))
     return index
 
 
