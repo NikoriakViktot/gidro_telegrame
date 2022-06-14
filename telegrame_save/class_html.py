@@ -42,9 +42,10 @@ class Telegram_html():
                 variable_int = (int(value[0]) - int(x[20:26]))
                 if variable_int == False:
                    telegram_gidro.append([TelegramTuple(x[20:26],x[0:19], x[20:])])
+
                 else:
                     if variable_int == True:
-                        continue
+                        break
             yield telegram_gidro
 
 
