@@ -14,7 +14,7 @@ from telegrame_save.db import request_index
 # username = 'chernovcgm'
 # password = '(zBLFX$#)'
 
-class DriverSelenium(Remote):
+class DriverSelenium(object):
 
     def __init__(self, webdriver):
 
