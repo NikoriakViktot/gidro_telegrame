@@ -53,6 +53,19 @@ def request_index():
 
 
 
+
+def create_db_data_gauges():
+    with sq.connect('../gauges_river_data.db') as con:
+        cur = con.cursor()
+        for i in index_gagues():
+            index_i = int(i)
+            cur.execute(f'''CREATE TABLE  '{index_i}'
+                   (date TEXT,
+                   gauges_telegrame TEXT NOT NULL)''')
+            con.commit()
+
+
+
 if __name__ == '__main__':
     request_index()
     # create_db()
