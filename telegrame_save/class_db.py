@@ -38,7 +38,7 @@ class Database:
         for row in cursor:
             print('  {}: {}'.format(row[' '], row[' ']))
 
-    def __iter__(self):
+    def __iter__(self,*args):
         cursor = self._db.execute('select * from {}  '.format(self._table))
         for row in cursor:
             yield dict(row)
@@ -122,23 +122,23 @@ class Database:
 
 if __name__ == '__main__':
     d = Database(filename='gauges1.db', table='index_gauges')
-    d.sql_do('drop table if exists index_gauges')
-    d.sql_do('CREATE TABLE IF NOT EXISTS  index_gauges (index_gauges TEXT NOT NULL)')
-
-    def index_gagues():
-        with open('index.txt', 'r') as f:
-            file = f.read()
-            index_gagues = []
-            for x in file.split():
-                index_gagues.append(x)
-            return index_gagues
-
-    for i in index_gagues():
-        data = i
-        dd = dict(index_gauges=data)
-
-        args = ("INSERT INTO  index_gauges(index_gauges) VALUES(?)",)
-        d.insert(*args,**dd)
+    # d.sql_do('drop table if exists index_gauges')
+    # d.sql_do('CREATE TABLE IF NOT EXISTS  index_gauges (index_gauges TEXT NOT NULL)')
+    #
+    # def index_gagues():
+    #     with open('index.txt', 'r') as f:
+    #         file = f.read()
+    #         index_gagues = []
+    #         for x in file.split():
+    #             index_gagues.append(x)
+    #         return index_gagues
+    #
+    # for i in index_gagues():
+    #     data = i
+    #     dd = dict(index_gauges=data)
+    #
+    #     args = ("INSERT INTO  index_gauges(index_gauges) VALUES(?)",)
+    #     d.insert(*args,**dd)
     for row in d:
         print(row.items())
 
