@@ -45,17 +45,22 @@ class Database:
 
     @property
     def filename(self): return self._filename
+
     @filename.setter
     def filename(self, fn):
         self._filename = fn
         self._db = sqlite3.connect(fn)
         self._db.row_factory = sqlite3.Row
+
     @filename.deleter
     def filename(self): self.close()
+
     @property
     def table(self): return self._table
+
     @table.setter
     def table(self, t): self._table = t
+
     @table.deleter
     def table(self): self._table = 'test'
 
@@ -125,22 +130,27 @@ if __name__ == '__main__':
     # d.sql_do('drop table if exists index_gauges')
     # d.sql_do('CREATE TABLE IF NOT EXISTS  index_gauges (index_gauges TEXT NOT NULL)')
     #
-    # def index_gagues():
-    #     with open('index.txt', 'r') as f:
-    #         file = f.read()
-    #         index_gagues = []
-    #         for x in file.split():
-    #             index_gagues.append(x)
-    #         return index_gagues
-    #
-    # for i in index_gagues():
-    #     data = i
-    #     dd = dict(index_gauges=data)
-    #
-    #     args = ("INSERT INTO  index_gauges(index_gauges) VALUES(?)",)
-    #     d.insert(*args,**dd)
+    def index_gagues():
+        with open('index.txt', 'r') as f:
+            file = f.read()
+            index_gagues = []
+            for x in file.split():
+                index_gagues.append(x)
+            return index_gagues
+
+    for i in index_gagues():
+        data = i
+        dd = dict(index_gauges=data)
+
+        args = ("INSERT INTO  index_gauges(index_gauges) VALUES(?)",)
+        d.insert(*args,**dd)
+        d.close()
     for row in d:
         print(row.items())
+
+
+    # d.close()
+
 
 
 
