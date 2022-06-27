@@ -8,12 +8,12 @@ class Database:
         self.table = kwargs.get('table')
 
 
-    def sql_do(self, sql, *params):
-        self._db.execute(sql, params)
+    def database_query(self, query, *params):
+        self._db.execute(query, params)
         self._db.commit()
 
-    def insert(self,*args, **kwargs):
-        column = args[0]
+    def insert_dict(self,qwery, **kwargs):
+        column = qwery
         # value=tuple([x.replace(x, '?') for x in column.split(',')])
         row = tuple(kwargs.values())
         self._db.execute(column, row)
@@ -24,13 +24,12 @@ class Database:
         return dict(cursor.fetchone())
 
     def update(self, row):
-        self._db.execute(
-            'update {} set '' = ? where '' = ?'.format(self._table),
-            (row[''], row['']))
+        self._db.execute('update {} set '' = ? where '' = ?'.format(self._table), (row[''], row['']))
         self._db.commit()
 
-    def delete(self, key):
-        self._db.execute('delete from {} where '' = ?'.format(self._table), (key,))
+    def delete(self,query,key):
+        query = query
+        self._db.execute(query,(key,))
         self._db.commit()
 
     def disp_rows(self):
@@ -41,7 +40,8 @@ class Database:
     def __iter__(self,*args):
         cursor = self._db.execute('select * from {}  '.format(self._table))
         for row in cursor:
-            yield dict(row)
+            yield row
+
 
     @property
     def filename(self): return self._filename
@@ -71,64 +71,13 @@ class Database:
 
 
 
-# class Data_Base(object):
-#
-#
-#     def __init__(self, path_db, data):
-#         self.data = data
-#         self.requst_db = requst_db
-#
-#     def index_gagues(self):
-#         with open('index.txt', 'r') as f:
-#             file = f.read()
-#             index_gagues = []
-#             for x in file.split():
-#                 index_gagues.append(x)
-#             return index_gagues
-#
-#
-#     def create_db(self):
-#         with sq.connect('../gauges_telegrame.db') as con:
-#             cur = con.cursor()
-#             cur.execute('''CREATE TABLE  index_gauges
-#                             (index_gauges TEXT NOT NULL)
-#                              ''')
-#             con.commit()
-#             for i in self.index_gagues():
-#                 index_i = int(i)
-#                 # print(index_i)
-#                 cur.execute(f'''CREATE TABLE  '{index_i}'
-#                        (date TEXT,
-#                        gauges_telegrame TEXT NOT NULL)''')
-#                 con.commit()
-#
-#
-#     def save_db(self):
-#         with sq.connect('../gauges_telegrame.db') as con:
-#             cur = con.cursor()
-#             for i in self.index_gagues():
-#                 data = i
-#                 cur.execute(''' INSERT INTO index_gauges
-#                             (index_gauges)
-#                             VALUES(?)''', (data,))
-#                 con.commit()
-#
-#
-#     def request_index(self):
-#         with sq.connect('../gauges_telegrame.db') as con:
-#             cur = con.cursor()
-#             cur.execute("SELECT * FROM index_gauges")
-#             index = [x[0] for x in cur.fetchall()]
-#             for value in index:
-#                 INDEX = []
-#                 INDEX.append(value)
-#                 yield INDEX
 
 
 if __name__ == '__main__':
-    d = Database(filename='gauges1.db', table='index_gauges')
-    # d.sql_do('drop table if exists index_gauges')
-    # d.sql_do('CREATE TABLE IF NOT EXISTS  index_gauges (index_gauges TEXT NOT NULL)')
+    file = '../gauges_telegrame1.db'
+    d = Database(filename=file, table='index_gauges')
+    d.database_query('drop table if exists index_gauges')
+    d.database_query('CREATE TABLE IF NOT EXISTS  index_gauges (index_gauges TEXT NOT NULL)')
     #
     def index_gagues():
         with open('index.txt', 'r') as f:
@@ -140,22 +89,59 @@ if __name__ == '__main__':
 
     for i in index_gagues():
         data = i
-        dd = dict(index_gauges=data)
+        query = "INSERT INTO  index_gauges(index_gauges) VALUES(?)"
+        d.database_query(query,data)
 
-        args = ("INSERT INTO  index_gauges(index_gauges) VALUES(?)",)
-        d.insert(*args,**dd)
-        d.close()
-    for row in d:
-        print(row.items())
+    # for row in d:
+    #     print(dict(row))
 
-
-    # d.close()
-
-
-
+    query_telegram = 'CREATE TABLE IF NOT EXISTS gidro_telegram' \
+                     ' (index_hydro_station TEXT,' \
+                     ' date TEXT, gauges_telegrame TEXT)'
+    telegram_tabl = Database(filename=file)
+    telegram_tabl.database_query(query_telegram)
 
 
 
+
+
+
+    #     def create_db(self):
+    #         with sq.connect('../gauges_telegrame.db') as con:
+    #             cur = con.cursor()
+    #             cur.execute('''CREATE TABLE  index_gauges
+    #                             (index_gauges TEXT NOT NULL)
+    #                              ''')
+    #             con.commit()
+    #             for i in self.index_gagues():
+    #                 index_i = int(i)
+    #                 # print(index_i)
+    #                 cur.execute(f'''CREATE TABLE  '{index_i}'
+    #                        (date TEXT,
+    #                        gauges_telegrame TEXT NOT NULL)''')
+    #                 con.commit()
+    #
+    #
+    #     def save_db(self):
+    #         with sq.connect('../gauges_telegrame.db') as con:
+    #             cur = con.cursor()
+    #             for i in self.index_gagues():
+    #                 data = i
+    #                 cur.execute(''' INSERT INTO index_gauges
+    #                             (index_gauges)
+    #                             VALUES(?)''', (data,))
+    #                 con.commit()
+    #
+    #
+    #     def request_index(self):
+    #         with sq.connect('../gauges_telegrame.db') as con:
+    #             cur = con.cursor()
+    #             cur.execute("SELECT * FROM index_gauges")
+    #             index = [x[0] for x in cur.fetchall()]
+    #             for value in index:
+    #                 INDEX = []
+    #                 INDEX.append(value)
+    #                 yield INDEX
 
     # print(d.__dir__())
     # print(list(d.__iter__()))
