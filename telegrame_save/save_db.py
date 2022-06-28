@@ -90,3 +90,6 @@ if __name__ == '__main__':
                object_t = Telegram_gidro(i.index, i.date_telegrame, i.telegram)
                object_t.save_db_gidro()
 
+    fl='../telegrame_save/data_html/2022-06-21.html'
+    s = Telegram_html(fl)
+    s.open_file()
