@@ -1,4 +1,5 @@
 import sqlite3
+import datetime
 
 class Database:
 
@@ -19,9 +20,30 @@ class Database:
         self._db.execute(column, row)
         self._db.commit()
 
-    def retrieve(self, key):
+    # def select_telegram_date(self, key):
+    #     query= 'SELECT gauges_telegrame FROM {} WHERE'.format(self._table)
+    #
+    #     '{int(self.index)}'
+    #     WHERE
+    #     date = '{(datetime.datetime.today() + datetime.timedelta(days=-1)).strftime
+    #     ("%Y-%m-%d")} 0
+    #     8: 00:00
+    #     ' '''
+    #     date_last = (datetime.datetime.today() + datetime.timedelta(days=-1)).strftime("%Y-%m-%d")
+    #     cursor = self._db.execute('select * from {} where '' = ?'.format(self._table), (key,))
+    #     return dict(cursor.fetchone())
+
+    def select_date_now(self, key):
+        date_now = datetime.date.today().strftime("%Y-%m-%d")
         cursor = self._db.execute('select * from {} where '' = ?'.format(self._table), (key,))
         return dict(cursor.fetchone())
+
+
+    def retrieve(self):
+        ddd = 'SELECT gauges_telegrame FROM gidro_telegram WHERE index_hydro_station= 42130 AND date= "2022-05-23 08:00:00"'
+
+        cursor = self._db.execute(ddd)
+        return cursor.fetchone()
 
     def update(self, row):
         self._db.execute('update {} set '' = ? where '' = ?'.format(self._table), (row[''], row['']))
@@ -96,7 +118,7 @@ if __name__ == '__main__':
     #     print(dict(row))
 
     query_telegram = 'CREATE TABLE IF NOT EXISTS gidro_telegram' \
-                     ' (index_hydro_station TEXT,' \
+                     ' (index_hydro_station INTEGER,' \
                      ' date TEXT, gauges_telegrame TEXT)'
     telegram_tabl = Database(filename=file)
     telegram_tabl.database_query(query_telegram)

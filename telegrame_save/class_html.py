@@ -141,16 +141,22 @@ if __name__ == '__main__':
     #         if int(x[0]) -  int(i.index) == False:
     #            object_t = Telegram_gidro(i.index, i.date_telegrame, i.telegram)
     #            object_t.save_db_gidro()
-
+    gidro_telgram_tabl = Database(filename=file_db_gidro, table='gidro_telegram')
     for i in s.soup_file():
         # print(i)
         a,b,c = i.index, i.date_telegrame, i.telegram
         object_t = Telegram_gidro(i.index, i.date_telegrame, i.telegram)
         # print(object_t)
-        gidro_telgram_tabl = Database(filename=file_db_gidro, table='gidro_telegram')
-        gidro_telgram_tabl.database_query(insert_gidro_telegram, a,b,c)
-        for row in gidro_telgram_tabl:
-            print(dict(row))
+
+        gidro_telgram_tabl.database_query(insert_gidro_telegram, int(a),b,c)
+        # for row in gidro_telgram_tabl:
+        #     print(dict(row))
+    t =gidro_telgram_tabl.retrieve()
+    print(t)
+
+
+    ddd = 'SELECT gauges_telegrame FROM gidro_telegram WHERE index_hydro_station= 42130 and  date= 2022-05-23 08:00:00'
+
 
 
 
