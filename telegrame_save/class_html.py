@@ -129,7 +129,7 @@ class Telegram_gidro():
             # telegram_gidro = TelegramTuple(x[20:26],x[0:19], x[20:])
 if __name__ == '__main__':
     file_html = f'../telegrame_save/data_html/{datetime.date.today().strftime("%Y-%m-%d")}.html'
-    f= '../telegrame_save/data_html/2022-05-24.html'
+    f= '../telegrame_save/data_html/2022-07-01.html'
     file_db_gidro = '../gauges_telegrame1.db'
     insert_gidro_telegram = 'insert INTO gidro_telegram' \
                             '(index_hydro_station ,date,gauges_telegrame)' \
@@ -151,8 +151,8 @@ if __name__ == '__main__':
         gidro_telgram_tabl.database_query(insert_gidro_telegram, int(a),b,c)
         # for row in gidro_telgram_tabl:
         #     print(dict(row))
-    t =gidro_telgram_tabl.retrieve()
-    print(t)
+    t =gidro_telgram_tabl.retrieve(42130,-3)
+    print(dict(t))
 
 
     ddd = 'SELECT gauges_telegrame FROM gidro_telegram WHERE index_hydro_station= 42130 and  date= 2022-05-23 08:00:00'

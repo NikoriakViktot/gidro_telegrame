@@ -39,9 +39,10 @@ class Database:
         return dict(cursor.fetchone())
 
 
-    def retrieve(self, index,):
-        ddd = 'SELECT gauges_telegrame FROM gidro_telegram WHERE index_hydro_station= 42130 AND date= "2022-05-23 08:00:00"'
-
+    def retrieve(self,args, date=0):
+        a = args
+        c = (datetime.datetime.today() + datetime.timedelta(days=date)).strftime("%Y-%m-%d")
+        ddd = 'SELECT gauges_telegrame FROM gidro_telegram WHERE index_hydro_station={} AND date = "{} 08:00:00"'.format(int(a),c)
         cursor = self._db.execute(ddd)
         return cursor.fetchone()
 
