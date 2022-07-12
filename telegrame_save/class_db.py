@@ -39,11 +39,10 @@ class Database:
         return dict(cursor.fetchone())
 
 
-    def retrieve(self,args, date=0):
-        a = args
-        c = (datetime.datetime.today() + datetime.timedelta(days=date)).strftime("%Y-%m-%d")
-        ddd = 'SELECT gauges_telegrame FROM gidro_telegram WHERE index_hydro_station={} AND date = "{} 08:00:00"'.format(int(a),c)
-        cursor = self._db.execute(ddd)
+    def select_date(self,index, date=0):
+        date_select = (datetime.datetime.today() + datetime.timedelta(days=date)).strftime("%Y-%m-%d")
+        qwery_date = 'SELECT gauges_telegrame FROM gidro_telegram WHERE index_hydro_station={} AND date = "{} 08:00:00"'.format(int(index),date_select)
+        cursor = self._db.execute(qwery_date)
         return cursor.fetchone()
 
     def update(self, row):

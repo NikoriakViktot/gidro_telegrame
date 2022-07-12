@@ -134,7 +134,7 @@ if __name__ == '__main__':
     insert_gidro_telegram = 'insert INTO gidro_telegram' \
                             '(index_hydro_station ,date,gauges_telegrame)' \
                             ' VALUES(?,?,?)'
-    s = Telegram_html(f)
+    s = Telegram_html(file_html)
     s.open_file()
     # for i in s.soup_file():
     #     for x in request_index():
@@ -151,8 +151,8 @@ if __name__ == '__main__':
         gidro_telgram_tabl.database_query(insert_gidro_telegram, int(a),b,c)
         # for row in gidro_telgram_tabl:
         #     print(dict(row))
-    t =gidro_telgram_tabl.retrieve(42130,-3)
-    print(dict(t))
+    t =gidro_telgram_tabl.select_date(index=42130, date=-1)
+    print(t[0])
 
 
     ddd = 'SELECT gauges_telegrame FROM gidro_telegram WHERE index_hydro_station= 42130 and  date= 2022-05-23 08:00:00'
