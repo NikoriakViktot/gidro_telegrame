@@ -7,35 +7,7 @@ import sqlite3 as sq
 from telegrame_save.class_db import Database
 from telegrame_save.db import request_index
 
-
-class Telegram_html():
-
-    def __init__(self, file):
-
-       self.file = file
-
-
-
-    def open_file(self):
-        with open(self.file, 'r', encoding='koi8-u') as file:
-            self.read_file = file.read()
-            return self.read_file
-
-
-
-    def soup_file(self):
-        soup = BeautifulSoup(self.read_file, "lxml")
-        body_telegrame = soup.find_all('pre')
-        telegram = [re.sub(("\s+"), " ", i) for i in ['='.join(i) for i in body_telegrame]]
-        # not_telegram = list(set([int(x[20:26]) for x in telegram] +
-        #                         [int(''.join(value[0])) for value in request_index()]))
-        TelegramTuple = namedtuple('TelegramTuple', 'index, date_telegrame, telegram', defaults=None)
-        for x in telegram:
-            telegram_gidro = TelegramTuple(x[20:26], x[0:19], x[20:])
-            yield telegram_gidro
-
-
-
+class Telegram_gidro():
 
     def variable_telegrame_gidro(self):
         TelegramTuple = namedtuple('TelegramTuple', 'index, date_telegrame, telegram', defaults=None)
@@ -106,7 +78,28 @@ class Telegram_gidro():
                                      WHERE date = '{date_l}' ''', (telegram_l,))
                         print(date_now, self.index)
             con.commit()
+        # for x in self.variable_telegrame_gidro():
+        #     tt = []
+        #     if len(x):
 
+        #         pass
+        #     else:
+        #         for z in not_telegram:
+        #             # print(z)
+        #             index_none = z
+        #             tt.(TelegramTuple(index_none, None, None))
+        #
+        #     yield tt
+
+
+
+            # yield telegram_gidro
+
+  # for value in request_index():
+            #     for x in telegram:
+            #         if x is None:
+            #             print(value)
+            # telegram_gidro = TelegramTuple(x[20:26],x[0:19], x[20:])
 if __name__ == '__main__':
     file_html = f'../telegrame_save/data_html/{datetime.date.today().strftime("%Y-%m-%d")}.html'
     f= '../telegrame_save/data_html/2022-07-01.html'
@@ -133,8 +126,6 @@ if __name__ == '__main__':
         #     print(dict(row))
     t =gidro_telgram_tabl.select_date(index=42130, date=-1)
     print(t[0])
-    print()
-
 
 
     ddd = 'SELECT gauges_telegrame FROM gidro_telegram WHERE index_hydro_station= 42130 and  date= 2022-05-23 08:00:00'
