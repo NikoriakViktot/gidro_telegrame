@@ -47,11 +47,11 @@ class Telegram_gidro(Database):
 
 if __name__ == '__main__':
     file_html = f'../telegrame_save/data_html/{datetime.date.today().strftime("%Y-%m-%d")}.html'
-    date_remove = (datetime.datetime.today() + datetime.timedelta(days=-1)).strftime("%Y-%m-%d")
-    s = Telegram_html(file_html,date_remove)
+    # date_remove = (datetime.datetime.today() + datetime.timedelta(days=-1)).strftime("%Y-%m-%d")
+    s = Telegram_html(file_html)
     s.open_file()
     for i in s.soup_file():
        dict_gidro_base = { 'filename':'../gauges_telegrame1.db',
                             'table':'gidro_telegram' }
-       object_t = Telegram_gidro(i.index, i.date_telegrame, i.telegram, **dict_gidro_base)
-       object_t.save_db_gidro()
+       Telegram_gidro(i.index, i.date_telegrame, i.telegram, **dict_gidro_base).save_db_gidro()
+

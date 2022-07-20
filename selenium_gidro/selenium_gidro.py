@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from telegrame_save.db import request_index
+from telegrame_save.class_db import Database
 
 # username = 'chernovcgm'
 # password = '(zBLFX$#)'
@@ -110,7 +110,8 @@ def post_gidro_telegrame_all(index):
 
 def index_gidropost()->str:
     i = []
-    for value in request_index():
+    file = '../gauges_telegrame1.db'
+    for value in Database(filename=file, table='index_gauges'):
         i.append(value[0])
     index = ' '.join(i)
     return index

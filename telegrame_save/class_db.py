@@ -107,5 +107,6 @@ if __name__ == '__main__':
                      ' (index_hydro_station INTEGER,' \
                      ' date TEXT, gauges_telegrame TEXT)'
     telegram_tabl = Database(filename=file)
-    telegram_tabl.database_query(query_telegram)
+    # telegram_tabl.database_query(query_telegram)
+
 
