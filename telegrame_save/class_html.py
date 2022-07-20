@@ -6,8 +6,8 @@ import os
 
 class Telegram_html():
 
-    def __init__(self, file,date_remove):
-       self.date_remove = date_remove
+    def __init__(self, file):
+       # self.date_remove = date_remove
        self.file = file
 
 
@@ -16,8 +16,10 @@ class Telegram_html():
     def open_file(self):
         with open(self.file, 'r', encoding='koi8-u') as file:
             self.read_file = file.read()
-            os.remove(f'../telegrame_save/data_html/{self.date_remove}.html')
+
             return self.read_file
+    # def remove_file(self):
+    #     os.remove(f'../telegrame_save/data_html/{self.date_remove}.html')
 
 
 
