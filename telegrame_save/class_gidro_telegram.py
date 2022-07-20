@@ -45,8 +45,6 @@ class Telegram_gidro(Database):
                         self.update(index,telegram_l,-1)
 
 
-
-
 if __name__ == '__main__':
     file_html = f'../telegrame_save/data_html/{datetime.date.today().strftime("%Y-%m-%d")}.html'
     date_remove = (datetime.datetime.today() + datetime.timedelta(days=-1)).strftime("%Y-%m-%d")

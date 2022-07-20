@@ -20,31 +20,14 @@ class Database:
         self._db.execute(column, row)
         self._db.commit()
 
-    # def select_telegram_date(self, key):
-    #     query= 'SELECT gauges_telegrame FROM {} WHERE'.format(self._table)
-    #
-    #     '{int(self.index)}'
-    #     WHERE
-    #     date = '{(datetime.datetime.today() + datetime.timedelta(days=-1)).strftime
-    #     ("%Y-%m-%d")} 0
-    #     8: 00:00
-    #     ' '''
-    #     date_last = (datetime.datetime.today() + datetime.timedelta(days=-1)).strftime("%Y-%m-%d")
-    #     cursor = self._db.execute('select * from {} where '' = ?'.format(self._table), (key,))
-    #     return dict(cursor.fetchone())
-
-    def select_date_now(self, key):
-        date_now = datetime.date.today().strftime("%Y-%m-%d")
-        cursor = self._db.execute('select * from {} where '' = ?'.format(self._table), (key,))
-        return dict(cursor.fetchone())
-
-
     def select_date(self,index, date=0):
         date_select = (datetime.datetime.today() + datetime.timedelta(days=date)).strftime("%Y-%m-%d")
         qwery_date = 'SELECT gauges_telegrame FROM gidro_telegram WHERE ' \
                      'index_hydro_station={} AND date = "{} 08:00:00"'.format(int(index),date_select)
         cursor = self._db.execute(qwery_date)
         return cursor.fetchone()
+
+
 
     def update(self,index,*data,date=0):
         date_select = (datetime.datetime.today() + datetime.timedelta(days=date)).strftime("%Y-%m-%d")
@@ -105,7 +88,8 @@ if __name__ == '__main__':
     d = Database(filename=file, table='index_gauges')
     d.database_query('drop table if exists index_gauges')
     d.database_query('CREATE TABLE IF NOT EXISTS  index_gauges (index_gauges TEXT NOT NULL)')
-    #
+
+
     def index_gagues():
         with open('index.txt', 'r') as f:
             file = f.read()
@@ -119,62 +103,9 @@ if __name__ == '__main__':
         query = "INSERT INTO  index_gauges(index_gauges) VALUES(?)"
         d.database_query(query,data)
 
-    # for row in d:
-    #     print(dict(row))
-
     query_telegram = 'CREATE TABLE IF NOT EXISTS gidro_telegram' \
                      ' (index_hydro_station INTEGER,' \
                      ' date TEXT, gauges_telegrame TEXT)'
     telegram_tabl = Database(filename=file)
     telegram_tabl.database_query(query_telegram)
 
-
-
-
-
-
-    #     def create_db(self):
-    #         with sq.connect('../gauges_telegrame.db') as con:
-    #             cur = con.cursor()
-    #             cur.execute('''CREATE TABLE  index_gauges
-    #                             (index_gauges TEXT NOT NULL)
-    #                              ''')
-    #             con.commit()
-    #             for i in self.index_gagues():
-    #                 index_i = int(i)
-    #                 # print(index_i)
-    #                 cur.execute(f'''CREATE TABLE  '{index_i}'
-    #                        (date TEXT,
-    #                        gauges_telegrame TEXT NOT NULL)''')
-    #                 con.commit()
-    #
-    #
-    #     def save_db(self):
-    #         with sq.connect('../gauges_telegrame.db') as con:
-    #             cur = con.cursor()
-    #             for i in self.index_gagues():
-    #                 data = i
-    #                 cur.execute(''' INSERT INTO index_gauges
-    #                             (index_gauges)
-    #                             VALUES(?)''', (data,))
-    #                 con.commit()
-    #
-    #
-    #     def request_index(self):
-    #         with sq.connect('../gauges_telegrame.db') as con:
-    #             cur = con.cursor()
-    #             cur.execute("SELECT * FROM index_gauges")
-    #             index = [x[0] for x in cur.fetchall()]
-    #             for value in index:
-    #                 INDEX = []
-    #                 INDEX.append(value)
-    #                 yield INDEX
-
-    # print(d.__dir__())
-    # print(list(d.__iter__()))
-
-    # d = Data_Base()
-    #
-    # d.db.connect()
-    # create_db()
-    # save_db()
