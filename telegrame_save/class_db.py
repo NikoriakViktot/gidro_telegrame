@@ -41,12 +41,17 @@ class Database:
 
     def select_date(self,index, date=0):
         date_select = (datetime.datetime.today() + datetime.timedelta(days=date)).strftime("%Y-%m-%d")
-        qwery_date = 'SELECT gauges_telegrame FROM gidro_telegram WHERE index_hydro_station={} AND date = "{} 08:00:00"'.format(int(index),date_select)
+        qwery_date = 'SELECT gauges_telegrame FROM gidro_telegram WHERE ' \
+                     'index_hydro_station={} AND date = "{} 08:00:00"'.format(int(index),date_select)
         cursor = self._db.execute(qwery_date)
         return cursor.fetchone()
 
-    def update(self, row):
-        self._db.execute('update {} set '' = ? where '' = ?'.format(self._table), (row[''], row['']))
+    def update(self,index,*data,date=0):
+        date_select = (datetime.datetime.today() + datetime.timedelta(days=date)).strftime("%Y-%m-%d")
+        qwery ='update {} set gauges_telegrame = ?' \
+               ' where index_hydro_station={} AND' \
+               ' date = "{} 08:00:00"'' = ?'.format(self._table,int(index),date_select)
+        self._db.execute(qwery, data)
         self._db.commit()
 
     def delete(self,query,key):
