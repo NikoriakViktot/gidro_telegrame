@@ -47,8 +47,6 @@ class Telegram_gidro(Database):
 
 
 if __name__ == '__main__':
-    # file_html = f'../telegrame_save/data_html/{datetime.date.today().strftime("%Y-%m-%d")}.html'
-    # date_remove = (datetime.datetime.today() + datetime.timedelta(days=-1)).strftime("%Y-%m-%d")
     def index_gidropost() -> str:
         i = []
         file = '../gauges_telegrame1.db'
@@ -57,8 +55,7 @@ if __name__ == '__main__':
         index = ' '.join(i)
         return index
     SeleniumGidro().post_gidro_telegrame_all(index_gidropost())
-    s = Telegram_html()
-    s.open_file()
+    s = Telegram_html().open_file()
     for i in s.soup_file():
        dict_gidro_base = { 'filename':'../gauges_telegrame1.db',
                             'table':'gidro_telegram' }
