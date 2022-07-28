@@ -1,20 +1,22 @@
 import re
 from collections import namedtuple
 from bs4 import BeautifulSoup
+from selenium_gidro.class_driver import SeleniumGidro
 import os
 
 
-class Telegram_html():
+class Telegram_html(SeleniumGidro):
 
-    def __init__(self, file):
+    def __init__(self):
        # self.date_remove = date_remove
-       self.file = file
+       super().__init__()
+
 
 
 
 
     def open_file(self):
-        with open(self.file, 'r', encoding='koi8-u') as file:
+        with open(self.data_html, 'r', encoding='koi8-u') as file:
             self.read_file = file.read()
 
             return self.read_file

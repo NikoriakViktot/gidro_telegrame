@@ -1,4 +1,5 @@
 import datetime
+from selenium_gidro.class_driver import SeleniumGidro
 from telegrame_save.class_db import Database
 from telegrame_save.class_html import Telegram_html
 
@@ -11,10 +12,10 @@ class Telegram_gidro(Database):
 
 
 
-    def __init__(self, index: object, date_telegrame: object, telegram: object, **kwargs: object) -> object:
+    def __init__(self, index_post: object, date_telegrame: object, telegram: object, **kwargs: object) -> object:
         super().__init__(**kwargs)
         self.date_telegrame = date_telegrame
-        self.index = index
+        self.index_post = index_post
         self.telegram = telegram
 
 
@@ -22,15 +23,15 @@ class Telegram_gidro(Database):
     def save_db_gidro(self):
         date_last = (datetime.datetime.today() + datetime.timedelta(days=-1)).strftime("%Y-%m-%d")
         date_now = datetime.date.today().strftime("%Y-%m-%d")
-        telegram_now = self.select_date(self.index,date=0)
+        telegram_now = self.select_date(self.index_post,date=0)
         if telegram_now is None:
             if self.date_telegrame[0:10] == date_now:
-                index = int(self.index)
+                index = int(self.index_post)
                 date_n = self.date_telegrame
                 telegram_n = self.telegram
                 self.database_query(self.insert_gidro_telegram,index,date_n,telegram_n)
         if self.date_telegrame[0:10] == date_last:
-            index = int(self.index)
+            index = int(self.index_post)
             date_l = self.date_telegrame
             telegram_l = self.telegram
             self.select_date(index, -1)
@@ -40,15 +41,23 @@ class Telegram_gidro(Database):
                 if telegram_yesterday is not None:
                     varif = telegram_l == telegram_yesterday
                     if varif is True:
-                        print(date_l, self.index)
+                        print(date_l, self.index_post)
                     else:
                         self.update(index,telegram_l,-1)
 
 
 if __name__ == '__main__':
-    file_html = f'../telegrame_save/data_html/{datetime.date.today().strftime("%Y-%m-%d")}.html'
+    # file_html = f'../telegrame_save/data_html/{datetime.date.today().strftime("%Y-%m-%d")}.html'
     # date_remove = (datetime.datetime.today() + datetime.timedelta(days=-1)).strftime("%Y-%m-%d")
-    s = Telegram_html(file_html)
+    def index_gidropost() -> str:
+        i = []
+        file = '../gauges_telegrame1.db'
+        for value in Database(filename=file, table='index_gauges'):
+            i.append(value[0])
+        index = ' '.join(i)
+        return index
+    SeleniumGidro().post_gidro_telegrame_all(index_gidropost())
+    s = Telegram_html()
     s.open_file()
     for i in s.soup_file():
        dict_gidro_base = { 'filename':'../gauges_telegrame1.db',
