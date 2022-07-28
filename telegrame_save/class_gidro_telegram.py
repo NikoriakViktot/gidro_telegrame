@@ -5,14 +5,14 @@ from telegrame_save.class_html import Telegram_html
 
 
 class Telegram_gidro(Database):
-
     insert_gidro_telegram = 'insert INTO gidro_telegram' \
                             '(index_hydro_station ,date,gauges_telegrame)' \
                             ' VALUES(?,?,?)'
 
 
 
-    def __init__(self, index_post: object, date_telegrame: object, telegram: object, **kwargs: object) -> object:
+
+    def __init__(self, index_post, date_telegrame, telegram, **kwargs):
         super().__init__(**kwargs)
         self.date_telegrame = date_telegrame
         self.index_post = index_post
